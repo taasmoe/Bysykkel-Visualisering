@@ -14,3 +14,7 @@ header {
 header h1 {
     font-size: 80px;
 }
+
+#map {
+    margin: 0 auto;
+}
