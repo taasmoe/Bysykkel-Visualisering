@@ -17,3 +17,18 @@ header h1 {
 #map {
     margin: 0 auto;
 }
+
+#visStier {
+    background-color: lightblue;
+}
+
+#skjulStier {
+    background-color: lightcoral;
+}
+
+button {
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+}

@@ -21,15 +21,18 @@ $(function () {
             L.marker(latlongArr, {riseOnHover: true, title: station_title}).addTo(map);
         }
 
-        for (var i = 1; i < json["stations"].length; i++) {
-            var latlngs = [
-                [json["stations"][i - 1]["center"]["latitude"],
-                    json["stations"][i - 1]["center"]["longitude"]],
-                [json["stations"][i]["center"]["latitude"],
-                    json["stations"][i]["center"]["longitude"]]
-            ];
 
-            L.polyline(latlngs, {color: "red"}).addTo(map);
-        }
+        $("#visStier").click(function () {
+            for (var i = 1; i < json["stations"].length; i++) {
+                var latlngs = [
+                    [json["stations"][i - 1]["center"]["latitude"],
+                        json["stations"][i - 1]["center"]["longitude"]],
+                    [json["stations"][i]["center"]["latitude"],
+                        json["stations"][i]["center"]["longitude"]]
+                ];
+
+                L.polyline(latlngs, {color: "lightcoral"}).addTo(map);
+            }
+        });
     });
 });
