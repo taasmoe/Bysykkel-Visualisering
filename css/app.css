@@ -18,7 +18,6 @@ header h1 {
     width: 5em;
 }
 
-
 #map {
     margin: 0 auto;
 }
@@ -39,7 +38,6 @@ button {
 }
 
 #legg-til-sti {
-    width: 500px;
     margin-left: auto;
     margin-right:auto;
     margin-top: 1em;
