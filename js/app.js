@@ -12,15 +12,18 @@ $(function () {
             attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
         }).addTo(map);
 
-        for (var i = 0; i < json["stations"].length; i++) {
-            var lat = json["stations"][i]["center"]["latitude"];
-            var long = json["stations"][i]["center"]["longitude"];
-            var latlongArr = [lat, long];
-            var station_title = json["stations"][i]["title"];
+        function leggTilMarkers() {
+            for (var i = 0; i < json["stations"].length; i++) {
+                var lat = json["stations"][i]["center"]["latitude"];
+                var long = json["stations"][i]["center"]["longitude"];
+                var latlongArr = [lat, long];
+                var station_title = json["stations"][i]["title"];
 
-            L.marker(latlongArr, {riseOnHover: true, title: station_title}).addTo(map);
+                L.marker(latlongArr, {riseOnHover: true, title: station_title}).addTo(map);
+            }
         }
 
+        leggTilMarkers();
 
         $("#visStier").click(function () {
             for (var i = 1; i < json["stations"].length; i++) {
@@ -31,7 +34,7 @@ $(function () {
                         json["stations"][i]["center"]["longitude"]]
                 ];
 
-                L.polyline(latlngs, {color: "lightcoral"}).addTo(map);
+                L.polyline(latlngs, {color: "coral"}).addTo(map);
             }
         });
     });
