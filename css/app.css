@@ -17,3 +17,10 @@ header h1 {
 #map {
     margin: 0 auto;
 }
+
+#legg-til-sti {
+    width: 500px;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top: 1em;
+}
