@@ -1,6 +1,15 @@
 $(function () {
+
+    // TODO Se om vi klarer fikse dette.
+    /*
+    var data = $.getJSON("stations.json", function (json) {
+        return json["responseJSON"];
+    });
+    */
+
+    console.log(data);
+
     $.getJSON("stations.json", function (json) {
-        console.log(json["stations"]);
 
         var map = L.map('map', {
             center: [59.930, 10.747933],
