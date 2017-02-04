@@ -39,6 +39,10 @@ $(function () {
         });
 
         $("#skjulStier").click(function () {
+            fjernAlleStier();
+        });
+
+        function fjernAlleStier() {
             for(i in map._layers) {
                 if(map._layers[i]._path != undefined) {
                     try {
@@ -49,9 +53,11 @@ $(function () {
                     }
                 }
             }
-        });
+        }
 
         $("#legg-til-sti").click(function () {
+            fjernAlleStier();
+
             var id1 = $("#id1").val();
             var id2 = $("#id2").val();
 
