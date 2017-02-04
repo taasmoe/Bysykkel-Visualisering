@@ -38,6 +38,19 @@ $(function () {
             }
         });
 
+        $("#skjulStier").click(function () {
+            for(i in map._layers) {
+                if(map._layers[i]._path != undefined) {
+                    try {
+                        map.removeLayer(map._layers[i]);
+                    }
+                    catch(e) {
+                        console.log("problem with " + e + map._layers[i]);
+                    }
+                }
+            }
+        });
+
         $("#legg-til-sti").click(function () {
             var id1 = $("#id1").val();
             var id2 = $("#id2").val();
