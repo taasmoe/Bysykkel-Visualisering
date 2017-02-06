@@ -14,6 +14,13 @@ header h1 {
     font-size: 80px;
 }
 
+button {
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+}
+
 .id-input {
     width: 5em;
 }
@@ -30,15 +37,18 @@ header h1 {
     background-color: coral;
 }
 
-button {
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-    font-family: 'Oswald', sans-serif;
-}
+
 
 #legg-til-sti {
     margin-left: auto;
     margin-right:auto;
     margin-top: 1em;
 }
+
+#visStativer {
+    background-color: lightgreen;
+}
+
+#skjulStativer {
+    background-color: lightsalmon;
+    }
