@@ -43,9 +43,11 @@ $(function () {
 
 
         $("#visStativer").click(function () {
+
             leggTilMarkers();
+
+            $("#visStativer").attr("disabled", true);
         });
-        //TODO gjør det mulig å fjerne markørene
 
 
         $("#skjulStativer").click(function () {
@@ -55,6 +57,8 @@ $(function () {
             });
 
             markers = [];
+
+            $("#visStativer").attr("disabled", false);
         });
 
 
