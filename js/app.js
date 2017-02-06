@@ -21,22 +21,42 @@ $(function () {
             attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
         }).addTo(map);
 
+
+        var markers = [];
+        var markersLayer;
+
         function leggTilMarkers() {
+
             for (var i = 0; i < json["stations"].length; i++) {
                 var lat = json["stations"][i]["center"]["latitude"];
                 var long = json["stations"][i]["center"]["longitude"];
-                var latlongArr = [lat, long];
-                var station_title = json["stations"][i]["title"];
 
-                L.marker(latlongArr, {riseOnHover: true, title: station_title}).addTo(map);
+                var mark = L.marker([lat, long], {riseOnHover: true})
+                    .bindPopup(json["stations"][i]["title"]);
+
+                markers.push(mark);
             }
+
+            markersLayer = L.layerGroup(markers).addTo(map);
+            console.log(markers.length);
         }
 
+
         $("#visStativer").click(function () {
-            leggTilMarkers()
+            leggTilMarkers();
+        });
+        //TODO gjør det mulig å fjerne markørene
+
+
+        $("#skjulStativer").click(function () {
+
+            markersLayer.eachLayer(function (layer) {
+                markersLayer.removeLayer(layer);
+            });
+
+            markers = [];
         });
 
-        //TODO gjør det mulig å fjerne markørene
 
         $("#visStier").click(function () {
             for (var i = 1; i < json["stations"].length; i++) {
@@ -51,9 +71,11 @@ $(function () {
             }
         });
 
+
         $("#skjulStier").click(function () {
             fjernAlleStier();
         });
+
 
         function fjernAlleStier() {
             for(i in map._layers) {
@@ -67,6 +89,7 @@ $(function () {
                 }
             }
         }
+
 
         $("#legg-til-sti").click(function () {
             var id1 = $("#id1").val();
@@ -84,6 +107,7 @@ $(function () {
 
             L.polyline(latlngs, {color: "red"}).addTo(map);
         });
+
 
         $("#legg-til-tre").click(function () {
             var edgeData = tree;
