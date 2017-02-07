@@ -1,44 +1,78 @@
 $(function () {
 
-    // TODO Se om vi klarer fikse dette.
-    /*
-    var data = $.getJSON("stations.json", function (json) {
-        return json["responseJSON"];
-    });
-    */
-
-    // console.log(data);
-
-    $.getJSON("stations.json", function (json) {
-
-        var map = L.map('map', {
-            center: [59.930, 10.747933],
-            zoom: 12.5,
-            minZoom: 12.5
+    function getData(callback) {
+        $.getJSON("stations.json", function (data) {
+            callback(data);
         });
+    }
 
-        L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart_graatone&zoom={z}&x={x}&y={y}', {
-            attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
-        }).addTo(map);
+    getData(function (json) {
 
-        function leggTilMarkers() {
+    });
+
+    var map = L.map('map', {
+        center: [59.930, 10.72933],
+        zoom: 13,
+        minZoom: 13
+    });
+
+
+    L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart_graatone&zoom={z}&x={x}&y={y}', {
+        attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
+    }).addTo(map);
+
+    var markers = [];
+    var markersLayer;
+
+
+    function leggTilMarkers() {
+
+        getData(function (json) {
+
             for (var i = 0; i < json["stations"].length; i++) {
+
                 var lat = json["stations"][i]["center"]["latitude"];
                 var long = json["stations"][i]["center"]["longitude"];
-                var latlongArr = [lat, long];
-                var station_title = json["stations"][i]["title"];
+                var mark = new L.marker([lat, long], {riseOnHover: true})
+                    .bindPopup(json["stations"][i]["title"]);
 
-                L.marker(latlongArr, {riseOnHover: true, title: station_title}).addTo(map);
+                markers.push(mark);
             }
-        }
 
-        $("#visStativer").click(function () {
-            leggTilMarkers()
+            markersLayer = L.layerGroup(markers).addTo(map);
+
+            /*
+             markersLayer.eachLayer(function (layer) {
+             layer.on('click', onClick());
+             });
+             */
+
+        });
+    }
+
+    $("#visStativer").click(function () {
+
+        leggTilMarkers();
+
+        $("#visStativer").attr("disabled", true);
+    });
+
+
+    $("#skjulStativer").click(function () {
+
+        markersLayer.eachLayer(function (layer) {
+            markersLayer.removeLayer(layer);
         });
 
-        //TODO gjør det mulig å fjerne markørene
+        markers = [];
 
-        $("#visStier").click(function () {
+        $("#visStativer").attr("disabled", false);
+    });
+
+
+    $("#visStier").click(function () {
+
+        getData(function (json) {
             for (var i = 1; i < json["stations"].length; i++) {
                 var latlngs = [
                     [json["stations"][i - 1]["center"]["latitude"],
@@ -50,28 +84,33 @@ $(function () {
                 L.polyline(latlngs, {color: "coral"}).addTo(map);
             }
         });
+    });
 
-        $("#skjulStier").click(function () {
-            fjernAlleStier();
-        });
 
-        function fjernAlleStier() {
-            for(i in map._layers) {
-                if(map._layers[i]._path != undefined) {
-                    try {
-                        map.removeLayer(map._layers[i]);
-                    }
-                    catch(e) {
-                        console.log("problem with " + e + map._layers[i]);
-                    }
+    $("#skjulStier").click(function () {
+        fjernAlleStier();
+    });
+
+
+    function fjernAlleStier() {
+        for (var i in map._layers) {
+            if (map._layers[i]._path != undefined) {
+                try {
+                    map.removeLayer(map._layers[i]);
+                }
+                catch (e) {
+                    console.log("problem with " + e + map._layers[i]);
                 }
             }
         }
+    }
 
-        $("#legg-til-sti").click(function () {
+
+    $("#legg-til-sti").click(function () {
+
+        getData(function (json) {
             var id1 = $("#id1").val();
             var id2 = $("#id2").val();
-
             var latlngs = [];
 
             for (var i = 0; i < json["stations"].length; i++) {
@@ -84,10 +123,13 @@ $(function () {
 
             L.polyline(latlngs, {color: "red"}).addTo(map);
         });
+    });
 
-        $("#legg-til-tre").click(function () {
+
+    $("#legg-til-tre").click(function () {
+
+        getData(function (json) {
             var edgeData = tree;
-
             var edges = [];
 
             for (var j = 0; j < edgeData.length; j++) {
