@@ -11,11 +11,10 @@ $(function () {
     });
 
     var map = L.map('map', {
-        center: [59.930, 10.72933],
+        center: [59.923, 10.72933],
         zoom: 13,
         minZoom: 13
     });
-
 
     L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart_graatone&zoom={z}&x={x}&y={y}', {
         attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
@@ -24,11 +23,9 @@ $(function () {
     var markers = [];
     var markersLayer;
 
-
     function leggTilMarkers() {
 
         getData(function (json) {
-
             for (var i = 0; i < json["stations"].length; i++) {
 
                 var lat = json["stations"][i]["center"]["latitude"];
@@ -40,13 +37,6 @@ $(function () {
             }
 
             markersLayer = L.layerGroup(markers).addTo(map);
-
-            /*
-             markersLayer.eachLayer(function (layer) {
-             layer.on('click', onClick());
-             });
-             */
-
         });
     }
 
@@ -107,7 +97,6 @@ $(function () {
 
 
     $("#legg-til-sti").click(function () {
-
         getData(function (json) {
             var id1 = $("#id1").val();
             var id2 = $("#id2").val();
@@ -120,14 +109,12 @@ $(function () {
                         json["stations"][i]["center"]["longitude"]]);
                 }
             }
-
             L.polyline(latlngs, {color: "red"}).addTo(map);
         });
     });
 
 
     $("#legg-til-tre").click(function () {
-
         getData(function (json) {
             var edgeData = tree;
             var edges = [];
@@ -148,6 +135,40 @@ $(function () {
                 edges.push(latlngs);
             }
             L.polyline(edges, {color: "blue", weight: "2"}).addTo(map);
+        });
+    });
+
+
+    // Hvert stativ fargelegges etter hvor ofte det er start- og endepunkt for en tur
+    $("#stationsRatio").click(function () {
+        getData(function (json) {
+            for (var i = 0; i < forhold.length; i++) {
+                var station = forhold[i]["id"];
+                var ratio = forhold[i]["ratio"];
+                var col;
+
+                if (ratio > 0.5) {
+                    col = "#FF0000";
+                } else if (ratio > 0) {
+                    col = "#CCCC00";
+                } else if (ratio > -0.5) {
+                    col = "#00DD00";
+                } else {
+                    col = "#00AAA0";
+                }
+
+                for (var j = 0; j < json["stations"].length; j++) {
+                    var id = json["stations"][j]["id"];
+                    if (id == station) {
+                        var lat = json["stations"][j]["center"]["latitude"];
+                        var long = json["stations"][j]["center"]["longitude"];
+                        var mark = new L.circleMarker([lat, long], {color: col})
+                            .bindPopup(json["stations"][j]["title"]);
+                        markers.push(mark);
+                    }
+                }
+            }
+            markersLayer = L.layerGroup(markers).addTo(map);
         });
     });
 });
