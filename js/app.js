@@ -1,14 +1,12 @@
 $(function () {
 
-    // TODO Se om vi klarer fikse dette.
-
-    function getData(callback){
-        $.getJSON( "stations.json", function(data) {
+    function getData(callback) {
+        $.getJSON("stations.json", function (data) {
             callback(data);
         });
     }
 
-    getData(function(json){
+    getData(function (json) {
 
     });
 
@@ -29,7 +27,7 @@ $(function () {
 
     function leggTilMarkers() {
 
-        getData(function(json){
+        getData(function (json) {
 
             for (var i = 0; i < json["stations"].length; i++) {
 
@@ -44,10 +42,10 @@ $(function () {
             markersLayer = L.layerGroup(markers).addTo(map);
 
             /*
-            markersLayer.eachLayer(function (layer) {
-                layer.on('click', onClick());
-            });
-            */
+             markersLayer.eachLayer(function (layer) {
+             layer.on('click', onClick());
+             });
+             */
 
         });
     }
@@ -74,7 +72,7 @@ $(function () {
 
     $("#visStier").click(function () {
 
-        getData(function(json){
+        getData(function (json) {
             for (var i = 1; i < json["stations"].length; i++) {
                 var latlngs = [
                     [json["stations"][i - 1]["center"]["latitude"],
@@ -95,12 +93,12 @@ $(function () {
 
 
     function fjernAlleStier() {
-        for(i in map._layers) {
-            if(map._layers[i]._path != undefined) {
+        for (var i in map._layers) {
+            if (map._layers[i]._path != undefined) {
                 try {
                     map.removeLayer(map._layers[i]);
                 }
-                catch(e) {
+                catch (e) {
                     console.log("problem with " + e + map._layers[i]);
                 }
             }
@@ -110,10 +108,9 @@ $(function () {
 
     $("#legg-til-sti").click(function () {
 
-        getData(function(json){
+        getData(function (json) {
             var id1 = $("#id1").val();
             var id2 = $("#id2").val();
-
             var latlngs = [];
 
             for (var i = 0; i < json["stations"].length; i++) {
@@ -131,7 +128,7 @@ $(function () {
 
     $("#legg-til-tre").click(function () {
 
-        getData(function(data){
+        getData(function (json) {
             var edgeData = tree;
             var edges = [];
 
