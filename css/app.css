@@ -37,18 +37,10 @@ button {
     background-color: coral;
 }
 
-
-
-#legg-til-sti {
-    margin-left: auto;
-    margin-right:auto;
-    margin-top: 1em;
-}
-
 #visStativer {
     background-color: lightgreen;
 }
 
 #skjulStativer {
     background-color: lightsalmon;
-    }
+}

@@ -119,17 +119,17 @@ $(function () {
             var edgeData = tree;
             var edges = [];
 
-            for (var j = 0; j < edgeData.length; j++) {
-                var id1 = edgeData[j][0];
-                var id2 = edgeData[j][1];
+            for (var i = 0; i < edgeData.length; i++) {
+                var id1 = edgeData[i][0];
+                var id2 = edgeData[i][1];
 
                 var latlngs = [];
 
-                for (var i = 0; i < json["stations"].length; i++) {
-                    var id = json["stations"][i]["id"];
+                for (var j = 0; j < json["stations"].length; j++) {
+                    var id = json["stations"][j]["id"];
                     if (id == id1 || id == id2) {
-                        latlngs.push([json["stations"][i]["center"]["latitude"],
-                            json["stations"][i]["center"]["longitude"]]);
+                        latlngs.push([json["stations"][j]["center"]["latitude"],
+                            json["stations"][j]["center"]["longitude"]]);
                     }
                 }
                 edges.push(latlngs);
@@ -142,16 +142,16 @@ $(function () {
     // Hvert stativ fargelegges etter hvor ofte det er start- og endepunkt for en tur
     $("#stationsRatio").click(function () {
         getData(function (json) {
-            for (var i = 0; i < forhold.length; i++) {
-                var station = forhold[i]["id"];
-                var ratio = forhold[i]["ratio"];
+            for (var i = 0; i < forhold["ratios"].length; i++) {
+                var station = forhold["ratios"][i]["id"];
+                var ratio = forhold["ratios"][i]["ratio"];
                 var col;
 
-                if (ratio > 0.5) {
+                if (ratio > (forhold["highest"] + forhold["median"]) / 2.0) {
                     col = "#FF0000";
                 } else if (ratio > 0) {
                     col = "#CCCC00";
-                } else if (ratio > -0.5) {
+                } else if (ratio > (forhold["lowest"] + forhold["median"]) / 2.0) {
                     col = "#00DD00";
                 } else {
                     col = "#00AAA0";
