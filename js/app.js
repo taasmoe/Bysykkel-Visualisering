@@ -1,4 +1,5 @@
 $(function () {
+    $("#legend").hide();
 
     function getData(callback) {
         $.getJSON("stations.json", function (data) {
@@ -57,6 +58,7 @@ $(function () {
         markers = [];
 
         $("#visStativer").attr("disabled", false);
+        $("#legend").hide();
     });
 
 
@@ -147,11 +149,11 @@ $(function () {
                 var ratio = forhold["ratios"][i]["ratio"];
                 var col;
 
-                if (ratio > (forhold["highest"] + forhold["median"]) / 2.0) {
+                if (ratio > forhold["z_1"]) {
                     col = "#FF0000";
-                } else if (ratio > 0) {
+                } else if (ratio > forhold["mean"]) {
                     col = "#CCCC00";
-                } else if (ratio > (forhold["lowest"] + forhold["median"]) / 2.0) {
+                } else if (ratio > forhold["z_-1"]) {
                     col = "#00DD00";
                 } else {
                     col = "#00AAA0";
@@ -168,7 +170,25 @@ $(function () {
                     }
                 }
             }
+
+            $("#legend li").each(function() {
+                $(this).html(function(i, old) {
+                    old = old.replace("z_1", logToRatio(forhold["z_1"]));
+                    old = old.replace("z_-1", logToRatio(forhold["z_-1"]));
+                    return old.replace("mean", logToRatio(forhold["mean"]));
+                });
+            });
             markersLayer = L.layerGroup(markers).addTo(map);
         });
+
+        $("#legend").show();
     });
 });
+
+function logToRatio(x) {
+    if (x < 0) {
+        return "1:" + Math.exp(Math.abs(x)).toFixed(2);
+    } else {
+        return Math.exp(x).toFixed(2) + ":1";
+    }
+}

@@ -23,6 +23,19 @@
             </div>
         </header>
         <div id="map" style="height: 600px; width: 900px;"></div>
+        <div id="legend" style="width: 500px">
+            <p>
+                Hvert stativ er fargelagt etter forholdet mellom hentinger og leveringer av sykler.
+                En verdi på 0 betyr at forholdet er 1:1.
+                En positiv verdi betyr at det hentes flere sykler enn det leveres på dette stativet.
+            </p>
+            <ul>
+                <li style="color: #ff0000">&gt; z_1</li>
+                <li style="color: #cccc00">mean &ndash; z_1</li>
+                <li style="color: #00dd00">z_-1 &ndash; mean</li>
+                <li style="color: #00aaa0">&lt; z_-1</li>
+            </ul>
+        </div>
     </body>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
